@@ -13,9 +13,9 @@ class Neuron
 	{
 		$this->type = $type;
 
-		if($this->type == "input") {
+		if($this->type != "input") {
 			for($i = 0; $i < $inputCount; $i++) {
-				$this->weights[$i] = rand(0, 10) / 10;
+				$this->weights[$i] = rand(0, 100) / 100;
 			}
 		} else {
 			$this->weights = array_fill(0, $inputCount, 1);

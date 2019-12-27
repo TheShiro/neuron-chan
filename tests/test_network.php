@@ -12,17 +12,11 @@ $network = new NeuralNetwork(3, 1, [2]);
 
 //$network->execute();
 $data = [
-	[0, [0,0,0]],
-	[0, [0,0,1]],
-	[1, [0,1,1]],
-	[1, [0,1,0]],
-	[0, [1,1,0]],
-	[0, [1,0,0]],
-	[1, [1,0,1]],
-	[1, [1,1,1]]
+	[0, [0,0,0]]
 ];
-$network->backPropagation(1.0, [0,0,0]);
+$network->setLearningRate(0.1)->learn($data, 3);
+//$network->learn($data, 3);
 
-print_r($network->getResult());
+//print_r($network->getResult());
 
 echo "OK";

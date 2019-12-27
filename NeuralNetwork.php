@@ -38,7 +38,7 @@ class NeuralNetwork
 		return $self;
 	}
 
-	public function setLearningRate(int $rate) : NeuralNetwork
+	public function setLearningRate(float $rate) : NeuralNetwork
 	{
 		$this->learningRate = $rate;
 		return $this;
@@ -59,7 +59,7 @@ class NeuralNetwork
 		return $this;
 	}
 
-	public function learn(array $dateset, int $epoch) : float 
+	public function learn(array $dataset, int $epoch) : float 
 	{
 		$error = 0.0;
 
@@ -67,6 +67,8 @@ class NeuralNetwork
 			foreach ($dataset as $date) {
 				$error += $this->backPropagation($date[0], $date[1]);
 			}
+			print_r($this->layers[1]);
+			echo "<br>----------------------------------------<br>";
 		}
 
 		return $error / $epoch;
@@ -88,8 +90,8 @@ class NeuralNetwork
 
 			foreach ($this->layers[$i]->neurons as $key => $neuron) {
 				foreach ($layer->neurons as $k => $n) {
-					$error = $n->weight[$key] * $n->delta;
-					$neuron->learn($error, $this->learningRate);
+					$error = $n->weights[$key] * $n->delta;
+					$n->learn($error, $this->learningRate);
 				}
 			}
 		}
