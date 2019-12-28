@@ -41,6 +41,7 @@ class Neuron
 	public function setSignal(float $signal) : void
 	{
 		$this->output = $signal;
+		$this->inputs[0] = $signal;
 	}
 
 	private function sigmoid(float $x) : float 
@@ -58,6 +59,7 @@ class Neuron
 		if($this->type == "input") return;
 
 		$this->delta = $error * $this->sigmoid($this->output);
+		//echo "error = $error - rate = $rate <br>";
 
 		foreach ($this->weights as $key => $value) {
 			$this->weights[$key] = $value - $this->inputs[$key] * $this->delta * $rate;

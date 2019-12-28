@@ -2,6 +2,7 @@
 
 require_once("Neuron.php");
 require_once("Layer.php");
+require_once("classes/functions.php");
 
 class NeuralNetwork
 {
@@ -67,8 +68,9 @@ class NeuralNetwork
 			foreach ($dataset as $date) {
 				$error += $this->backPropagation($date[0], $date[1]);
 			}
-			print_r($this->layers[1]);
-			echo "<br>----------------------------------------<br>";
+			//print_r($this->layers[1]);
+			//print_network($this->layers);
+			//echo "<br>----------------------------------------<br>";
 		}
 
 		return $error / $epoch;
@@ -89,9 +91,11 @@ class NeuralNetwork
 			$layer = $this->layers[$i + 1];
 
 			foreach ($this->layers[$i]->neurons as $key => $neuron) {
+				//print_r($neuron);
 				foreach ($layer->neurons as $k => $n) {
 					$error = $n->weights[$key] * $n->delta;
-					$n->learn($error, $this->learningRate);
+					$neuron->learn($error, $this->learningRate);
+					//echo "<br><br>";
 				}
 			}
 		}

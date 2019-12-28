@@ -12,11 +12,14 @@ $network = new NeuralNetwork(3, 1, [2]);
 
 //$network->execute();
 $data = [
+	[1, [1,1,1]],
 	[0, [0,0,0]]
 ];
-$network->setLearningRate(0.1)->learn($data, 3);
+$error = $network->setLearningRate(0.8)->learn($data, 300);
+print_r($network->layers);
+print_r($error);
 //$network->learn($data, 3);
 
 //print_r($network->getResult());
 
-echo "OK";
+echo "<br>OK";
