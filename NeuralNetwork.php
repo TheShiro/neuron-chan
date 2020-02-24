@@ -11,7 +11,7 @@ class NeuralNetwork
 	public $inputCount;
 	public $outputCount;
 	public $hiddenCount;
-	public $learningRate = 0;
+	public $learningRate = 0.1;
 
 	public function __construct(int $inputCount, int $outputCount, array $hiddenCount)
 	{
@@ -67,10 +67,9 @@ class NeuralNetwork
 		for($i = 0; $i < $epoch; $i++) {
 			foreach ($dataset as $date) {
 				$error += $this->backPropagation($date[0], $date[1]);
+
+				print_network($this->layers);
 			}
-			//print_r($this->layers[1]);
-			//print_network($this->layers);
-			//echo "<br>----------------------------------------<br>";
 		}
 
 		return $error / $epoch;
@@ -87,15 +86,17 @@ class NeuralNetwork
 			$neuron->learn($difference, $this->learningRate);
 		}
 
-		for ($i = count($this->layers) - 2; $i >=0; $i--) { 
-			$layer = $this->layers[$i + 1];
+		for ($j = count($this->layers) - 2; $j >= 0; $j--) { 
+			$layer = $this->layers[$j];
+			$prevLayer = $this->layers[$j + 1];
 
-			foreach ($this->layers[$i]->neurons as $key => $neuron) {
-				//print_r($neuron);
-				foreach ($layer->neurons as $k => $n) {
-					$error = $n->weights[$key] * $n->delta;
+			for ($i=0; $i < count($layer->neurons); $i++) { 
+				$neuron =  $layer->neurons[$i];
+
+				for ($k=0; $k < count($prevLayer->neurons); $k++) { 
+					$prevNeuron = $prevLayer->neurons[$k];
+					$error = $prevNeuron->weights[$i] * $prevNeuron->delta;
 					$neuron->learn($error, $this->learningRate);
-					//echo "<br><br>";
 				}
 			}
 		}

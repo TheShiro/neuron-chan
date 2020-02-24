@@ -5,7 +5,7 @@ class Neuron
 
 	public $weights;
 	public $inputs;
-	public $type;
+	private $type;
 	public $output;
 	public $delta;
 
