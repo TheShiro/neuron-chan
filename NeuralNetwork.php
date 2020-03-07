@@ -2,7 +2,7 @@
 
 require_once("Neuron.php");
 require_once("Layer.php");
-require_once("classes/functions.php");
+require_once("common/functions.php");
 
 class NeuralNetwork
 {
@@ -68,7 +68,8 @@ class NeuralNetwork
 			foreach ($dataset as $date) {
 				$error += $this->backPropagation($date[0], $date[1]);
 
-				print_network($this->layers);
+				//print_network($this->layers);
+				draw_network($this->layers);
 			}
 		}
 
