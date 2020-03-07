@@ -1,0 +1,119 @@
+body {
+	font-size: 16px;
+}
+
+.network {
+	background: url(images/nn.png) no-repeat;
+	width: 1200px;
+	height: 500px;
+
+	border-bottom: solid 3px #678;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.layout {
+	position: relative;
+}
+
+.neuron {
+	position: absolute;
+	top: 40px;
+	left: 60px;
+}
+
+.neuron_2 {
+	position: absolute;
+	top: 155px;
+	left: 67px;
+}
+
+.neuron_3 {
+	position: absolute;
+	top: 274px;
+	left: 68px;
+}
+
+.neuron_33 {
+	position: absolute;
+	top: 390px;
+	left: 68px;
+}
+
+.neuron_4 {
+	position: absolute;
+	top: 149px;
+	left: 62px;
+}
+
+.neuron_5 {
+	position: absolute;
+	top: 280px;
+	left: 60px;
+}
+
+.neuron_6 {
+	position: absolute;
+	top: 213px;
+	left: 42px;
+}
+
+.weight_1 {
+	position: absolute;
+	top: 27px;
+	left: 220px;
+}
+
+.weight_2 {
+	position: absolute;
+	top: 64px;
+	left: 220px;
+}
+
+.weight_3 {
+	position: absolute;
+	top: 136px;
+	left: 220px;
+}
+
+.weight_4 {
+	position: absolute;
+	top: 169px;
+	left: 220px;
+}
+
+.weight_5 {
+	position: absolute;
+	top: 256px;
+	left: 220px;
+}
+
+.weight_6 {
+	position: absolute;
+	top: 293px;
+	left: 220px;
+}
+
+.weight_55 {
+	position: absolute;
+	top: 370px;
+	left: 220px;
+}
+
+.weight_66 {
+	position: absolute;
+	top: 410px;
+	left: 220px;
+}
+
+.weight_7 {
+	position: absolute;
+	top: 149px;
+	left: 210px;
+}
+
+.weight_8 {
+	position: absolute;
+	top: 280px;
+	left: 210px;
+}
