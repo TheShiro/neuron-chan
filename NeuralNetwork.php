@@ -24,7 +24,7 @@ class NeuralNetwork
 		$this->CreateOutputLayer();
 	}
 
-	public static function loadNetwork(string $filename) : NeuralNetwork
+	public static function init(string $filename) : NeuralNetwork
 	{
 		//TODO load file with weights
 		$self = new self();
@@ -119,6 +119,11 @@ class NeuralNetwork
 		$this->firstLayer()->setSignals($inputSignals);
 
 		return $this;
+	}
+
+	public function saveNetwork(string $name) : void 
+	{
+		file_put_contents("../networks/" . $name, json_encode($this));
 	}
 
 	private function addLayer(Layer $layer) : void

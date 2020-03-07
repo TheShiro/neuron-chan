@@ -29,6 +29,9 @@ $data = [
 $error = $network->setLearningRate(0.1)->learn($data, 10);
 //print_r($network->layers);
 print_r($error);
+print_r($network);
+
+$network->saveNetwork("testing");
 
 
 echo "<br>OK";
