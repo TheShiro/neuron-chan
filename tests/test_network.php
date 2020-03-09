@@ -26,12 +26,16 @@ $data = [
 	[1, [1,1,1,0]],
 	[1, [1,1,1,1]],
 ];
-$error = $network->setLearningRate(0.1)->learn($data, 10);
+//Обучение
+//$error = $network->setLearningRate(0.1)->learn($data, 10);
+//$network->saveNetwork("testing");
 //print_r($network->layers);
-print_r($error);
+
+//print_r($error);
+//print_r($network);
+
+
+$network = NeuralNetwork::init("testing");
 print_r($network);
-
-$network->saveNetwork("testing");
-
 
 echo "<br>OK";

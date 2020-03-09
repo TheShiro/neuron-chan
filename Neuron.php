@@ -44,16 +44,6 @@ class Neuron
 		$this->inputs[0] = $signal;
 	}
 
-	private function sigmoid(float $x) : float 
-	{
-		return 1.0 / (1.0 + exp(-$x));
-	}
-
-	private function sigmoidDelta(float $x) : float
-	{
-		return $this->sigmoid($x) / (1 - $this->sigmoid($x));
-	}
-
 	public function learn(float $error, float $rate) : void
 	{
 		if($this->type == "input") return;
@@ -64,6 +54,25 @@ class Neuron
 		foreach ($this->weights as $key => $value) {
 			$this->weights[$key] = $value - $this->inputs[$key] * $this->delta * $rate;
 		}
+	}
+
+	public function initWeights(array $weights) : void
+	{
+		if(count($weights) != count($this->weights)) {
+			throw new Exception("Error! Error! The number of input weights is different", 1);
+		}
+
+		$this->weights = $weights;
+	}
+
+	private function sigmoid(float $x) : float 
+	{
+		return 1.0 / (1.0 + exp(-$x));
+	}
+
+	private function sigmoidDelta(float $x) : float
+	{
+		return $this->sigmoid($x) / (1 - $this->sigmoid($x));
 	}
 
 }

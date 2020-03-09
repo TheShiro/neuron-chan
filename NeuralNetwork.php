@@ -2,6 +2,7 @@
 
 require_once("Neuron.php");
 require_once("Layer.php");
+require_once("File.php");
 require_once("common/functions.php");
 
 class NeuralNetwork
@@ -26,15 +27,10 @@ class NeuralNetwork
 
 	public static function init(string $filename) : NeuralNetwork
 	{
-		//TODO load file with weights
-		$self = new self();
-		$self->inputCount = $inputCount;
-		$self->outputCount = $outputCount;
-		$self->hiddenCount = $hiddenCount;
-
-		$self->CreateInputLayer();
-		$self->CreateHiddenLayer();
-		$self->CreateOutputLayer();
+		$jsonNetwork = File::get($filename);
+		$tmpNetwork = json_decode($jsonNetwork);
+		$self = new self($tmpNetwork->inputCount, $tmpNetwork->outputCount, $tmpNetwork->hiddenCount);
+		$self->initWeights($tmpNetwork->layers);
 
 		return $self;
 	}
@@ -123,7 +119,7 @@ class NeuralNetwork
 
 	public function saveNetwork(string $name) : void 
 	{
-		file_put_contents("../networks/" . $name, json_encode($this));
+		File::set($name, json_encode($this));
 	}
 
 	private function addLayer(Layer $layer) : void
@@ -162,6 +158,15 @@ class NeuralNetwork
 		$outputLayer = new Layer();
 		$outputLayer->setCount($this->outputCount)->addNeurons(new Neuron($this->lastLayer()->count, 'output'));
 		$this->addLayer($outputLayer);
+	}
+
+	private function initWeights(array $layers) : void
+	{
+		foreach ($layers as $l => $layer) {
+			foreach ($layer->neurons as $n => $neuron) {
+				$this->layers[$l]->neurons[$n]->initWeights($neuron->weights);
+			}
+		}
 	}
 
 }
