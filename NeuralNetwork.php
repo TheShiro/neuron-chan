@@ -16,10 +16,11 @@ class NeuralNetwork
 
 	public function __construct(int $inputCount, int $outputCount, array $hiddenCount)
 	{
+		//initialize properties
 		$this->inputCount = $inputCount;
 		$this->outputCount = $outputCount;
 		$this->hiddenCount = $hiddenCount;
-
+		//create layers
 		$this->CreateInputLayer();
 		$this->CreateHiddenLayer();
 		$this->CreateOutputLayer();
@@ -27,9 +28,12 @@ class NeuralNetwork
 
 	public static function init(string $filename) : NeuralNetwork
 	{
+		//get saving NN from saving file
 		$jsonNetwork = File::get($filename);
 		$tmpNetwork = json_decode($jsonNetwork);
+		//initialize NN
 		$self = new self($tmpNetwork->inputCount, $tmpNetwork->outputCount, $tmpNetwork->hiddenCount);
+		//set weihts nerouns from saving
 		$self->initWeights($tmpNetwork->layers);
 
 		return $self;
@@ -45,7 +49,7 @@ class NeuralNetwork
 	{
 		foreach($this->layers as $k => $layer) {
 			if($k == 0) continue;
-
+			//get signals from previous layer
 			$signals = $this->layers[$k - 1]->getSignals();
 
 			foreach($layer->neurons as $neuron) {
@@ -64,7 +68,7 @@ class NeuralNetwork
 			foreach ($dataset as $date) {
 				$error += $this->backPropagation($date[0], $date[1]);
 
-				//print_network($this->layers);
+				//visual representation NN
 				draw_network($this->layers);
 			}
 		}
@@ -109,7 +113,7 @@ class NeuralNetwork
 	public function enterData(array $inputSignals) : NeuralNetwork
 	{
 		if(count($inputSignals) != $this->inputCount) {
-			throw new Exception("Error! The number of input signals different from the number of neurons of first layer", 1);
+			throw new Exception("Error! The number of input signals is different", 1);
 		}
 
 		$this->firstLayer()->setSignals($inputSignals);
@@ -140,7 +144,8 @@ class NeuralNetwork
 	private function CreateInputLayer() : void
 	{
 		$inputLayer = new Layer();
-		$inputLayer->setCount($this->inputCount)->addNeurons(new Neuron(1, 'input'));
+		$inputLayer->setCount($this->inputCount)
+				   ->addNeurons(new Neuron(1, 'input'));
 		$this->addLayer($inputLayer);
 	}
 
@@ -148,7 +153,8 @@ class NeuralNetwork
 	{
 		foreach($this->hiddenCount as $count) {
 			$hiddenLayer = new Layer();
-			$hiddenLayer->setCount($count)->addNeurons(new Neuron($this->lastLayer()->count));
+			$hiddenLayer->setCount($count)
+						->addNeurons(new Neuron($this->lastLayer()->count));
 			$this->addLayer($hiddenLayer);
 		}
 	}
@@ -156,7 +162,8 @@ class NeuralNetwork
 	private function CreateOutputLayer() : void
 	{
 		$outputLayer = new Layer();
-		$outputLayer->setCount($this->outputCount)->addNeurons(new Neuron($this->lastLayer()->count, 'output'));
+		$outputLayer->setCount($this->outputCount)
+					->addNeurons(new Neuron($this->lastLayer()->count, 'output'));
 		$this->addLayer($outputLayer);
 	}
 

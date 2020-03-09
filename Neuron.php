@@ -18,6 +18,7 @@ class Neuron
 				$this->weights[$i] = rand(0, 100) / 100;
 			}
 		} else {
+			//fill weights for first layer
 			$this->weights = array_fill(0, $inputCount, 1);
 		}
 	}
@@ -49,7 +50,6 @@ class Neuron
 		if($this->type == "input") return;
 
 		$this->delta = $error * $this->sigmoid($this->output);
-		//echo "error = $error - rate = $rate <br>";
 
 		foreach ($this->weights as $key => $value) {
 			$this->weights[$key] = $value - $this->inputs[$key] * $this->delta * $rate;
