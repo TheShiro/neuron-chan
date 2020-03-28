@@ -5,6 +5,7 @@ ini_set('display_errors', '1');
 
 require_once("../NeuralNetwork.php");
 require_once("../DB.php");
+require_once("../models/DataModel.php");
 
 session_start();
 // $_SESSION['epoch'] = 1;
@@ -28,9 +29,10 @@ while($row = $res->fetch()) {
 	eval("\$dataset[] = [{$row['expected']}, [{$row['data']}]];");
 }
 
-print_r($dataset);
+// print_r($dataset);
 
 foreach ($dataset as $key => $value) {
+	print_r($value);
 	$value[1] = DataModel::Normalisation($value[1]);
 }
 
