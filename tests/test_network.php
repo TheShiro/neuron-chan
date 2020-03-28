@@ -10,18 +10,18 @@ require_once("../models/DataModel.php");
 session_start();
 // $_SESSION['epoch'] = 1;
 $epoch = 50;
-/*if(!$_SESSION['epoch']) {
+if(!$_SESSION['epoch']) {
 	$_SESSION['epoch'] = 1;
 } else {
 	$_SESSION['epoch'] += $epoch;
-}*/
+}
 
 print_r($_SESSION['epoch']);
 
 echo "<pre>";
 
 $db = new DB();
-$res = $db->select("SELECT * FROM data WHERE id IN (1,2,3,306,303,4,305,5,6,7,304) limit 10");
+$res = $db->select("SELECT * FROM data"); //WHERE id IN (1,2,3,306,303,4,305,5,6,7,304) limit 10
 
 $dataset = [];
 while($row = $res->fetch()) {
@@ -29,14 +29,13 @@ while($row = $res->fetch()) {
 	eval("\$dataset[] = [{$row['expected']}, [{$row['data']}]];");
 }
 
-// print_r($dataset);
-
-foreach ($dataset as $key => $value) {
-	print_r($value);
+//normalise dataset
+foreach ($dataset as $key => &$value) {
 	$value[1] = DataModel::Normalisation($value[1]);
 }
+// print_r($dataset);
 
-$network = new NeuralNetwork(20, 1, [20]);
+// $network = new NeuralNetwork(20, 1, [10, 10]);
 
 // $data = [
 // 	[0, [0,0,0,0]],
@@ -67,7 +66,7 @@ $network = new NeuralNetwork(20, 1, [20]);
 //print_r($network);
 
 
-// $network = NeuralNetwork::init("learning", 1);
+$network = NeuralNetwork::init("learning", 1);
 
 // foreach ($dataset as $key => $data) {
 // 	$network = new NeuralNetwork(20, 1, [20]);
@@ -79,8 +78,8 @@ $network = new NeuralNetwork(20, 1, [20]);
 // 	echo "<br>---<br>";
 // 	$network = null;
 // }
-// $error = $network->setLearningRate(0.1)->learn($dataset, $epoch);
-// $network->saveToDB($_SESSION['epoch'], $error);
+$error = $network->setLearningRate(0.3)->learn($dataset, $epoch);
+$network->saveToDB($_SESSION['epoch'], $error);
 
 //if($_SESSION['epoch'] > 500) exit("stop");
 
@@ -88,6 +87,6 @@ echo "<br>OK";
 
 ?>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
 	window.location.reload();
-</script> -->
+</script>

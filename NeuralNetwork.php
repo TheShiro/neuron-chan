@@ -76,8 +76,8 @@ class NeuralNetwork
 
 				//visual representation NN
 				// draw_network($this->layers, $date[0]);
-				print_network($this->layers);
-				echo "expected = " . $date[0];
+				// print_network($this->layers);
+				// echo "expected = " . $date[0];
 			}
 		}
 

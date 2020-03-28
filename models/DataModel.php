@@ -11,17 +11,15 @@ class DataModel
 			$min = $min <= $val ? $min : $val;
 			$max = $max >= $val ? $max : $val;
 		}, $arr);
-		print_r($min);
-		echo " - ";
-		print_r($max);
+		// print_r($min);
+		// echo " - ";
+		// print_r($max);
 
 		$midd = ($min + $max) / count($arr);
-		echo " - ";
-		print_r($midd);
+		// echo " - ";
+		// print_r($midd);
 
-		$arr = self::func2($arr, $midd);
-		print_r($arr);
-		return [];
+		return self::func2($arr, $midd);
 	}
 
 	/**
