@@ -28,7 +28,7 @@ class NeuralNetwork
 	}
 
 	/**
-	 * @param if 'db' = 0 then 'name' is way to file
+	 * @param if '$db' = 0 then '$name' is way to file
 	 * else name of table in DB
 	 * @return object of NeuralNetwork class
 	 */
@@ -195,7 +195,8 @@ class NeuralNetwork
 		}
 	}
 
-	private static function getFromDB($tableName) {
+	private static function getFromDB($tableName) : string
+	{
 		$db = new DB();
 		$query = $db->db->query("SELECT actual FROM $tableName ORDER BY epoch DESC");
 		$res = $query->fetch();
@@ -203,3 +204,5 @@ class NeuralNetwork
 	}
 
 }
+
+?>

@@ -28,7 +28,11 @@ while($row = $res->fetch()) {
 	eval("\$dataset[] = [{$row['expected']}, [{$row['data']}]];");
 }
 
-// print_r($dataset);
+print_r($dataset);
+
+foreach ($dataset as $key => $value) {
+	$value[1] = DataModel::Normalisation($value[1]);
+}
 
 $network = new NeuralNetwork(20, 1, [20]);
 

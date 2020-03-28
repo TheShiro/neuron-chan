@@ -26,3 +26,5 @@ function draw_network(array $layers, int $exp)
 	require "network.php";
 	echo "expected = " . $exp;
 }
+
+?>
