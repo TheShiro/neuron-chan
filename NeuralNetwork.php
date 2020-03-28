@@ -3,6 +3,7 @@
 require_once("Neuron.php");
 require_once("Layer.php");
 require_once("File.php");
+require_once("DB.php");
 require_once("common/functions.php");
 
 class NeuralNetwork
@@ -26,10 +27,15 @@ class NeuralNetwork
 		$this->CreateOutputLayer();
 	}
 
-	public static function init(string $filename) : NeuralNetwork
+	/**
+	 * @param if 'db' = 0 then 'name' is way to file
+	 * else name of table in DB
+	 * @return object of NeuralNetwork class
+	 */
+	public static function init(string $name, int $db = 0) : NeuralNetwork
 	{
 		//get saving NN from saving file
-		$jsonNetwork = File::get($filename);
+		$jsonNetwork = !$db ? File::get($name) : self::getFromDB($name);
 		$tmpNetwork = json_decode($jsonNetwork);
 		//initialize NN
 		$self = new self($tmpNetwork->inputCount, $tmpNetwork->outputCount, $tmpNetwork->hiddenCount);
@@ -69,11 +75,45 @@ class NeuralNetwork
 				$error += $this->backPropagation($date[0], $date[1]);
 
 				//visual representation NN
-				draw_network($this->layers);
+				// draw_network($this->layers, $date[0]);
+				print_network($this->layers);
+				echo "expected = " . $date[0];
 			}
 		}
 
 		return $error / $epoch;
+	}
+
+	public function getResult() : Neuron
+	{
+		return end($this->lastLayer()->neurons);
+	}
+
+	public function enterData(array $inputSignals) : NeuralNetwork
+	{
+		if(count($inputSignals) != $this->inputCount) {
+			throw new Exception("Error! The number of input signals is different", 1);
+		}
+
+		$this->firstLayer()->setSignals($inputSignals);
+
+		return $this;
+	}
+
+	public function saveNetwork(string $name) : void 
+	{
+		File::set($name, json_encode($this));
+	}
+
+	public function saveToDB(int $epoch, float $error) : void
+	{
+		$db = new DB();
+		$query = $db->db->prepare("INSERT INTO learning (epoch, actual, error) VALUES (:epoch, :actual, :error);");
+		$query->execute([
+			'epoch' => $epoch,
+			'actual' => json_encode($this),
+			'error' => $error
+		]);
 	}
 
 	private function backPropagation(float $expected, array $inputs) : float
@@ -103,27 +143,6 @@ class NeuralNetwork
 		}
 
 		return $difference ** 2;
-	}
-
-	public function getResult() : Neuron
-	{
-		return end($this->lastLayer()->neurons);
-	}
-
-	public function enterData(array $inputSignals) : NeuralNetwork
-	{
-		if(count($inputSignals) != $this->inputCount) {
-			throw new Exception("Error! The number of input signals is different", 1);
-		}
-
-		$this->firstLayer()->setSignals($inputSignals);
-
-		return $this;
-	}
-
-	public function saveNetwork(string $name) : void 
-	{
-		File::set($name, json_encode($this));
 	}
 
 	private function addLayer(Layer $layer) : void
@@ -174,6 +193,13 @@ class NeuralNetwork
 				$this->layers[$l]->neurons[$n]->initWeights($neuron->weights);
 			}
 		}
+	}
+
+	private static function getFromDB($tableName) {
+		$db = new DB();
+		$query = $db->db->query("SELECT actual FROM $tableName ORDER BY epoch DESC");
+		$res = $query->fetch();
+		return $res[0];
 	}
 
 }

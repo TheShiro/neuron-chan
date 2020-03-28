@@ -21,7 +21,8 @@ function print_network(array $layers)
 	echo "</table>";
 }
 
-function draw_network(array $layers)
+function draw_network(array $layers, int $exp)
 {
 	require "network.php";
+	echo "expected = " . $exp;
 }
